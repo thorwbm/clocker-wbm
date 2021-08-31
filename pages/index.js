@@ -10,17 +10,7 @@ import {
 } from '@chakra-ui/react'
 
 import {Logo } from './../components'
-
-let schema = yup.object().shape({
-  name: yup.string().required(),
-  age: yup.number().required().positive().integer(),
-  email: yup.string().email(),
-  website: yup.string().url(),
-  createdOn: yup.date().default(function () {
-    return new Date();
-  }),
-});
-
+//import firebase from './../config/firebase'
 
 
 const validationSchema = yup.object().shape({
@@ -33,8 +23,13 @@ export default function Home() {
   const {values, handleChange,
          errors,handleBlur,
          handleSubmit, touched, 
+         isSubmitting
   } = useFormik({
-    onSubmit: () => { },
+    onSubmit: async (values, form) => { 
+     
+      //const user = await firebase.auth().signInWithEmailAndPassword(values.email, values.username)
+      
+    },
     validationSchema,
     initialValues: {
       email:'',
@@ -71,7 +66,7 @@ export default function Home() {
   
           <FormControl id="username" p={4} isRequired>
             <InputGroup size="lg">
-              <InputLeftAddon children="clocker.work/"/>
+              <InputLeftAddon children="clocker.work/" fontWeight="bold"/>
               <Input type="username"  value={values.username} 
                    onChange={handleChange} onBlur={handleBlur}/>
             </InputGroup>
@@ -79,7 +74,8 @@ export default function Home() {
           </FormControl>
 
         <Box p={4}>
-          <Button colorScheme="blue" width="100%" onClick={handleSubmit}>Entrar</Button>
+          <Button colorScheme="blue" width="100%" isLoading={isSubmitting} 
+                  onClick={handleSubmit}>Entrar</Button>
         </Box>
       </box>
   </Container>
